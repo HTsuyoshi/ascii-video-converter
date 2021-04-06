@@ -21,8 +21,8 @@ python3 run-video/main.py
 
 ## Preview
 <video width="320" height="240" controls>
-	<source src="./assets/ascii-video.mp4" type="video/mp4>
+	<source src="./assets/ascii-video.mp4" />
 </video>
 <video width="320" height="240" controls>
-	<source src="./assets/video.mp4" type="video/mp4>
+	<source src="./assets/video.mp4" />
 </video>
