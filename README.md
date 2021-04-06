@@ -21,5 +21,5 @@ python3 run-video/main.py
 
 ## Preview
 
-<img src="./assets/ascii-video.gif" width="250" height="250" />
-<img src="./assets/video.gif" width="250" height="250" />
+<img src="./assets/video.gif" style="display: block;" width="400" height="250" />
+<img src="./assets/ascii-video.gif" style="display: block;"width="250" height="250" />
