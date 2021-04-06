@@ -8,7 +8,7 @@
 </div>
 
 ## Welcome
-To full-fill my SECOND personal desires (run bad apple in my shell) I created this video to UTF-8 conversor. It's a python script that get an MP4 file and transform into a folder full of ascii-art.
+To full-fill my SECOND personal desires (run bad apple in my shell) I created this video to UTF-8 converter. It's a python script that get an MP4 file and transform into a folder full of ascii-art.
 
 ## Requirements (python library)
 
