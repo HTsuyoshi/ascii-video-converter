@@ -3,8 +3,8 @@
 ## Preview
 
 <div style="display: table;">
-	<img style="float:left; padding: 20px;"  src="./assets/video.gif" style="display: block;" width="250" height="250" />
-	<img style="float:left; padding: 5px;" src="./assets/ascii-video.gif" style="display: block;"width="400" height="250" />
+	<img src="./assets/video.gif" style="display: block;" width="250" height="250" />
+	<img src="./assets/ascii-video.gif" style="display: block;"width="400" height="250" />
 </div>
 
 ## Welcome
