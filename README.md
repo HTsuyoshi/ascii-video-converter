@@ -20,5 +20,6 @@ python3 run-video/main.py
 ```
 
 ## Preview
-<video src="./assets/ascii-video.mp4" width="320" height="240" controls preload></video>
-<video src="./assets/video.mp4" width="320" height="240" controls preload></video>
+
+<img src="./assets/ascii-video" width="250" height="250" />
+<img src="./assets/video" width="250" height="250" />
