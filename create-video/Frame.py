@@ -3,10 +3,9 @@ import numpy, cv2
 
 class Frame:
 
-    def __init__(self, width, height, fps, frame, boundary, boundaryhl):
+    def __init__(self, width, height, frame, boundary, boundaryhl):
         self.width = width - (width % 2)
         self.height = height - (height % 4)
-        self.fps = fps
         self.frame = frame
         self.boundary = boundary
         self.boundaryhl = boundaryhl
