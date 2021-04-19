@@ -100,8 +100,7 @@ if __name__ == '__main__':
         with open('../' + folder + '/' + str(frameIndex), 'w') as file:
             file.write(frameClass.frame_to_ascii())
 
-        if frameIndex % 100 == 0:
-            print("Frames done:", frameIndex)
+        print("Frames done:", frameIndex)
         frameIndex += 1
 
     print("Frames done:", frameIndex)

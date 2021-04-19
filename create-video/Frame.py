@@ -21,7 +21,7 @@ class Frame:
                     if matrix[i][j] < self.boundary:
                         ascii_value += 2 ** ((i//2) + (j*2))
 
-        return chr(data.brailleData.get(ascii_value))
+        return chr(data.brailleData[ascii_value])
 
     def frame_to_ascii(self):
         grayscale_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
