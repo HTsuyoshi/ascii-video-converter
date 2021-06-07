@@ -1,8 +1,9 @@
+#!/usr/bin/env python
 from Frame import Frame
-import data, strings
-import cv2, os, numpy
+import data
+import cv2, os, numpy, argparse
 
-def calculate_boundary(frame):
+def calculate_threshold(frame):
     total = [0, 0, 0]
     for row in frame:
         for pixel in row:
@@ -29,56 +30,67 @@ def create_folder(name):
     except OSError:
         print('Error: Create video directory')
 
-def set_default(string, default_value):
-    if string == '':
-        return default_value
-    else:
-        return string
-
 def resize_image(image, width, height, new_width):
     ratio = height / width
     new_height = int(new_width * ratio)
     image = cv2.resize(image,(new_width, new_height))
     return image, new_width, new_height
 
-def receive_int(integer, exception1, exception2, limit=9999):
-    if not integer.isnumeric():
-        raise Exception(exception1)
-    integer = int(integer)
-    if integer < 0 or integer > limit:
-        raise Exception(exception2)
-    return integer
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+            description='Simple script to convert video into ascii frames'
+    )
+    parser.add_argument(
+            'video',
+            help='Path of the video',
+            type=str
+            )
+    parser.add_argument(
+            '-s',
+            '--size',
+            help='Output size',
+            type=int,
+            default='300'
+    )
+    parser.add_argument(
+            '-t',
+            '--treshold',
+            help='Choose threshold of the video',
+            type=int,
+            default=-1
+    )
+    parser.add_argument(
+            '-n',
+            '--negative',
+            help='Negative filter',
+            type=bool,
+            default=False
+    )
+    parser.add_argument(
+            '--skip-frames',
+            help='Amount of frames to be skipped',
+            type=int,
+            default=0
+    )
+
+    arguments = parser.parse_args()
+    new_image_width = arguments.size
+    threshold = arguments.treshold
+    negative = arguments.negative
+    video_path = arguments.video
+    skip_frames = arguments.skip_frames
+
     folder = 'video-txt'
     create_folder(folder)
 
-    path = input(strings.choose1)
-    video = open_video(path)
+    video = open_video(video_path)
 
     width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     fps = video.get(cv2.CAP_PROP_FPS)
+
     print('The video have', fps, 'fps')
-
-    new_image_width = set_default(input(strings.choose2), '300')
-    new_image_width = receive_int(new_image_width, strings.exception6, strings.exception7)
-
-    relative = set_default(input(strings.choose3), 'y')
-    if relative != 'y' and relative != 'n':
-        raise Exception(strings.exception7)
-
-    boundary = 0
-    if relative == 'n':
-        boundary = set_default(input(strings.boundary1), '128')
-        boundary = receive_int(boundary, strings.exception1, strings.exception2, 255)
-
-    skip_frames = set_default(input(strings.fps), '0')
-    skip_frames = receive_int(skip_frames, strings.exception3, strings.exception4)
-
-    boundaryhl = set_default(input(strings.boundary2), 'h')
-    if boundaryhl != 'h' and boundaryhl != 'l':
-        raise Exception(strings.exception5)
 
     frameIndex = 0
     while(video.isOpened()):
@@ -92,10 +104,10 @@ if __name__ == '__main__':
 
         frame, width, height = resize_image(frame, width, height, new_image_width)
 
-        if relative == 'y':
-            boundary = calculate_boundary(frame)
+        if threshold == -1:
+            threshold = calculate_threshold(frame)
 
-        frameClass = Frame(width, height, frame, boundary, boundaryhl)
+        frameClass = Frame(width, height, frame, threshold, negative)
 
         with open('../' + folder + '/' + str(frameIndex), 'w') as file:
             file.write(frameClass.frame_to_ascii())
@@ -108,7 +120,6 @@ if __name__ == '__main__':
     with open('../' + folder + '/' + str('info'), 'w') as file:
         file.write(str(frameIndex) + '\n')
         file.write('FPS: ' + str(fps))
-
     print('Video info created')
 
     print('Video was sucessful converted')

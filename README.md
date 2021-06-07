@@ -19,10 +19,10 @@ To full-fill my SECOND personal desires (run bad apple in my shell) I created th
 ## Usage
 First generate the "video-txt" folder in "create-video".
 ```
-python3 create-video/main.py
+./create-video/asciiVideo videoPath
 ```
 Second run the video in the "run-video" folder.
 ```
-python3 run-video/main.py
+./run-video/runVideo
 ```
 

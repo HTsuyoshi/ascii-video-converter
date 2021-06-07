@@ -3,22 +3,22 @@ import numpy, cv2
 
 class Frame:
 
-    def __init__(self, width, height, frame, boundary, boundaryhl):
+    def __init__(self, width, height, frame, threshold, negative):
         self.width = width - (width % 2)
         self.height = height - (height % 4)
         self.frame = frame
-        self.boundary = boundary
-        self.boundaryhl = boundaryhl
+        self.threshold = threshold
+        self.negative = negative
 
     def matrix_to_ascii(self, matrix):
         ascii_value = 0
         for i in range(2):
             for j in range(4):
-                if self.boundaryhl == 'h':
-                    if matrix[i][j] > self.boundary:
+                if self.negative:
+                    if matrix[i][j] > self.threshold:
                         ascii_value += 2 ** ((i//2) + (j*2))
                 else:
-                    if matrix[i][j] < self.boundary:
+                    if matrix[i][j] < self.threshold:
                         ascii_value += 2 ** ((i//2) + (j*2))
 
         return chr(data.brailleData[ascii_value])
