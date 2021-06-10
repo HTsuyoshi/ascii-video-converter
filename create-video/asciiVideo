@@ -19,6 +19,9 @@ def open_video(name):
         print ("File does not exist")
         sys.exit(1)
     video = cv2.VideoCapture(name)
+    if video is None or not video.isOpened():
+        print('Warning: unable to open video source: ', name)
+        sys.exit(1)
     return video
 
 def create_folder(name):
