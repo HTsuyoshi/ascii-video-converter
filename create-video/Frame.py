@@ -1,5 +1,6 @@
 import data
 import numpy, cv2
+from io import StringIO
 
 class Frame:
 
@@ -27,7 +28,7 @@ class Frame:
         grayscale_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         line_index = 0
         column_index = 0
-        ascii_frame = ""
+        ascii_frame = StringIO()
 
         while column_index < self.height:
             while line_index < self.width:
@@ -35,10 +36,10 @@ class Frame:
                 for i in range(2):
                     for j in range(4):
                         matrix[i][j] = grayscale_frame[column_index + j][line_index + i]
-                ascii_frame += self.matrix_to_ascii(matrix)
+                ascii_frame.write(self.matrix_to_ascii(matrix))
                 line_index += 2
-            ascii_frame += "\n"
+            ascii_frame.write("\n")
             line_index = 0
             column_index += 4
 
-        return ascii_frame
+        return ascii_frame.getvalue()

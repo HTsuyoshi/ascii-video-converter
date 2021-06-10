@@ -1,26 +1,24 @@
 #!/usr/bin/env python
 from Frame import Frame
+import cv2, os, numpy, argparse, sys
 import data
-import cv2, os, numpy, argparse
 
-def calculate_threshold(frame):
-    total = [0, 0, 0]
+def calculate_threshold_gray(frame):
+    total = 0
     for row in frame:
         for pixel in row:
-            for RGB in range(3):
-                total[RGB] += pixel[RGB]
+            total += pixel
 
-    for RGB in range(3):
-        total[RGB] = total[RGB] // (len(frame)* len(frame[0]))
-    average = (total[0] + total[1] + total[2]) // 3
-
-    return average
+    total = total // (len(frame)* len(frame[0]))
+    return total
 
 def open_video(name):
     try:
-        video = cv2.VideoCapture(name)
+        open (name)
     except:
-        print('Error: Open video')
+        print ("File does not exist")
+        sys.exit(1)
+    video = cv2.VideoCapture(name)
     return video
 
 def create_folder(name):
@@ -81,18 +79,22 @@ if __name__ == '__main__':
     video_path = arguments.video
     skip_frames = arguments.skip_frames
 
-    folder = 'video-txt'
-    create_folder(folder)
-
     video = open_video(video_path)
+
+    folder = 'run-video'
+    create_folder(folder)
 
     width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     fps = video.get(cv2.CAP_PROP_FPS)
 
-    print('The video have', fps, 'fps')
+    print('The video has', fps, 'fps')
 
-    frameIndex = 0
+    frame_index = 0 
+    file_name = 'video.txt'
+    video_file = open('../' + folder + '/' + file_name, 'w')
+
+
     while(video.isOpened()):
         ret, frame = video.read()
 
@@ -105,22 +107,22 @@ if __name__ == '__main__':
         frame, width, height = resize_image(frame, width, height, new_image_width)
 
         if threshold == -1:
-            threshold = calculate_threshold(frame)
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            threshold = calculate_threshold_gray(gray)
 
         frameClass = Frame(width, height, frame, threshold, negative)
 
-        with open('../' + folder + '/' + str(frameIndex), 'w') as file:
-            file.write(frameClass.frame_to_ascii())
+        video_file.write(frameClass.frame_to_ascii())
 
-        print("Frames done:", frameIndex)
-        frameIndex += 1
+        print("Frames done:", frame_index)
+        frame_index += 1
+    with open('../' + folder + '/' + 'info.txt', 'w') as info_file:
+        info_file.write('FPS: ' + str(fps) + '\n')
+        info_file.write('Height: ' + str(height // 4) + '\n')
+        info_file.write(str(frame_index) + '\n')
+        info_file.close()
 
-    print("Frames done:", frameIndex)
-
-    with open('../' + folder + '/' + str('info'), 'w') as file:
-        file.write(str(frameIndex) + '\n')
-        file.write('FPS: ' + str(fps))
+    print("Frames done:", frame_index)
     print('Video info created')
 
     print('Video was sucessful converted')
-    exit(0)
