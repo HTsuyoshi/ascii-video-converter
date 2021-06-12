@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from Frame import Frame
-import cv2, os, numpy, argparse, sys
+import os, sys, cv2, numpy, argparse
 import data
 
 def calculate_threshold_gray(frame):
@@ -23,13 +23,6 @@ def open_video(name):
         print('Warning: unable to open video source: ', name)
         sys.exit(1)
     return video
-
-def create_folder(name):
-    try:
-        if not os.path.exists(name):
-            os.makedirs('../' + name)
-    except OSError:
-        print('Error: Create video directory')
 
 def resize_image(image, width, height, new_width):
     ratio = height / width
@@ -83,10 +76,6 @@ if __name__ == '__main__':
     skip_frames = arguments.skip_frames
 
     video = open_video(video_path)
-
-    folder = 'run-video'
-    create_folder(folder)
-
     width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     fps = video.get(cv2.CAP_PROP_FPS)
@@ -95,8 +84,8 @@ if __name__ == '__main__':
 
     frame_index = 0 
     file_name = 'video.txt'
+    folder = 'run-video'
     video_file = open('../' + folder + '/' + file_name, 'w')
-
 
     while(video.isOpened()):
         ret, frame = video.read()
