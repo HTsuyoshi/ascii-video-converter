@@ -13,9 +13,18 @@ if __name__ == '__main__':
             type=str,
             default='n'
     )
+    parser.add_argument(
+            '-v',
+            '--velocity',
+            help='--velocity=2',
+            type=float,
+            default=1
+    )
 
     arguments = parser.parse_args()
     repeat = arguments.repeat
+    vel = arguments.velocity
+
     info = 'info.txt'
     with open('./' + info, 'r') as file:
         fps = float(file.readline()[5:])
@@ -23,11 +32,12 @@ if __name__ == '__main__':
         total = float(file.readline())
 
     x = 0
-    sleep_time = 1/fps
+    sleep_time = 1/(fps * vel)
     video_file = 'video.txt'
     file = open('./' + video_file, 'r')
     while x < total:
         output = ""
+
         for y in range (height):
             output += file.readline()
             
