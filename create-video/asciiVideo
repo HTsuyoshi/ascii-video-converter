@@ -75,6 +75,11 @@ if __name__ == '__main__':
     video_path = arguments.video
     skip_frames = arguments.skip_frames
 
+    auto_threshold = 0
+    if threshold == -1:
+        auto_threshold = 1
+
+
     video = open_video(video_path)
     width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
@@ -82,7 +87,7 @@ if __name__ == '__main__':
 
     print('The video has', fps, 'fps')
 
-    frame_index = 0 
+    frame_index = 0
     file_name = 'video.txt'
     folder = 'run-video'
     video_file = open('../' + folder + '/' + file_name, 'w')
@@ -98,13 +103,14 @@ if __name__ == '__main__':
 
         frame, width, height = resize_image(frame, width, height, new_image_width)
 
-        if threshold == -1:
+        if auto_threshold == 1:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             threshold = calculate_threshold_gray(gray)
 
         frameClass = Frame(width, height, frame, threshold, negative)
 
         video_file.write(frameClass.frame_to_ascii())
+        print(frameClass.frame_to_ascii())
 
         print("Frames done:", frame_index)
         frame_index += 1
