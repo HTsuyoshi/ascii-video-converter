@@ -89,8 +89,7 @@ if __name__ == '__main__':
 
     frame_index = 0
     file_name = 'video.txt'
-    folder = 'run-video'
-    video_file = open('../' + folder + '/' + file_name, 'w')
+    video_file = open(f'/tmp/{file_name}', 'w')
 
     while(video.isOpened()):
         ret, frame = video.read()
@@ -114,7 +113,8 @@ if __name__ == '__main__':
 
         print("Frames done:", frame_index)
         frame_index += 1
-    with open('../' + folder + '/' + 'info.txt', 'w') as info_file:
+
+    with open('/tmp/info.txt', 'w') as info_file:
         info_file.write('FPS: ' + str(fps) + '\n')
         info_file.write('Height: ' + str(height // 4) + '\n')
         info_file.write(str(frame_index) + '\n')
@@ -122,5 +122,4 @@ if __name__ == '__main__':
 
     print("Frames done:", frame_index)
     print('Video info created')
-
     print('Video was sucessful converted')

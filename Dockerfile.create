@@ -1,0 +1,16 @@
+# syntax=docker/dockerfile:1
+
+FROM python:3.10-buster as builder
+
+WORKDIR /create-video
+COPY ./create-video/ .
+
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "ffmpeg", "libsm6", "libxext6", "-y"]
+
+RUN ["useradd", "-m", "guest"]
+USER guest
+
+RUN ["pip", "--no-cache-dir", "install", "opencv-python", "numpy", "argparse"]
+
+ENTRYPOINT ["./asciiVideo"]

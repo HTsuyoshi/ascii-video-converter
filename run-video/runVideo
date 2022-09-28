@@ -26,7 +26,7 @@ if __name__ == '__main__':
     vel = arguments.velocity
 
     info = 'info.txt'
-    with open('./' + info, 'r') as file:
+    with open(f'/tmp/{info}', 'r') as file:
         fps = float(file.readline()[5:])
         height = int(float(file.readline()[7:]))
         total = float(file.readline())
@@ -34,13 +34,13 @@ if __name__ == '__main__':
     x = 0
     sleep_time = 1/(fps * vel)
     video_file = 'video.txt'
-    file = open('./' + video_file, 'r')
+    file = open(f'/tmp/{video_file}', 'r')
     while x < total:
         output = ""
 
         for y in range (height):
             output += file.readline()
-            
+
         stdout.write(output)
         time.sleep(sleep_time)
         os.system('cls' if os.name == 'nt' else 'clear')
